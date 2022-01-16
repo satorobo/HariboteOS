@@ -92,6 +92,7 @@ next:
     CMP   CH, CYLS
     JB    readloop
 
+    MOV   [0x0ff0], CH      ; Memorize the last read cylinder
     JMP   0xc200            ; Jump main process(jump to os.sys)
 
 error:
