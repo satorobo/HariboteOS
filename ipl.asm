@@ -92,7 +92,7 @@ next:
     CMP   CH, CYLS
     JB    readloop
 
-    JMP   fin
+    JMP   0xc200            ; Jump main process(jump to os.sys)
 
 error:
     MOV   SI, msg
