@@ -1,11 +1,20 @@
+nasmhead.bin: nasmhead.asm
+	nasm -o nasmhead.bin nasmhead.asm
+
+nasmfunc.o: nasmfunc.asm
+	nasm -f elf32 -o nasmfunc.o nasmfunc.asm
+
+bootpack.o: bootpack.c
+	gcc -c -m32 -fno-pic -o bootpack.o bootpack.c
+
+bootpack.bin: bootpack.o nasmfunc.o
+	ld -m elf_i386 -e HariMain -o bootpack.bin -Tos.ls bootpack.o nasmfunc.o
+
+os.sys: nasmhead.bin bootpack.bin
+	cat  nasmhead.bin bootpack.bin > os.sys
+
 ipl.bin: ipl.asm
-	nasm ipl.asm -o ipl.bin
-
-haribote.bin: haribote.asm
-	nasm haribote.asm -o haribote.bin
-
-os.sys: haribote.bin
-	cat haribote.bin > os.sys
+	nasm -o ipl.bin ipl.asm
 
 os.img: ipl.bin os.sys
 	mformat -f 1440 -C -B ipl.bin -i os.img ::
@@ -16,6 +25,7 @@ run: os.img
 
 clean:
 	@rm -f *.bin
+	@rm -f *.o
 	@rm -f *.img
 	@rm -f *.sys
 
