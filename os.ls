@@ -21,5 +21,8 @@ SECTIONS {
         *(.bss)
     }
 
-    /DISCARD/ : { *(.ef_frame) }
+    /DISCARD/ : {
+        *(.eh_frame)
+        *(.note.*)
+    }
 }
