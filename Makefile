@@ -29,4 +29,7 @@ clean:
 	@rm -f *.img
 	@rm -f *.sys
 
-.PHONY: clean
+debug:
+	qemu-system-x86_64 -cpu 486 -vga std -fda os.img -gdb tcp::10000 -S &
+
+.PHONY: clean debug
